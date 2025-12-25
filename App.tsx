@@ -5,6 +5,7 @@ import { Icons } from './constants';
 import { Modal } from './components/Modal';
 import { RoleSelect } from './components/RoleSelect';
 import { generateRaciPlan } from './services/geminiService';
+import { typedStorage, StorageKeys } from './services';
 
 const initialTasks: Task[] = [
   {
@@ -44,13 +45,13 @@ const initialRoster = [
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>(() => {
     if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem('raci_tasks');
-        if (saved) {
-            try {
-                return JSON.parse(saved);
-            } catch (e) {
-                console.error("Failed to parse tasks from localStorage", e);
+        try {
+            const saved = typedStorage.getItem(StorageKeys.TASKS);
+            if (saved) {
+                return saved;
             }
+        } catch (e) {
+            console.error("Failed to load tasks from storage", e);
         }
     }
     return initialTasks;
@@ -61,32 +62,44 @@ const App: React.FC = () => {
   // Roster State
   const [roster, setRoster] = useState<string[]>(() => {
     if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem('raci_roster');
-        if (saved) {
-            try {
-                return JSON.parse(saved);
-            } catch (e) {
-                console.error("Failed to parse roster from localStorage", e);
+        try {
+            const saved = typedStorage.getItem(StorageKeys.ROSTER);
+            if (saved) {
+                return saved.sort();
             }
+        } catch (e) {
+            console.error("Failed to load roster from storage", e);
         }
     }
     return initialRoster.sort();
   });
 
-  // Save to LocalStorage effects
+  // Save to Storage effects
   useEffect(() => {
-    localStorage.setItem('raci_tasks', JSON.stringify(tasks));
+    try {
+      typedStorage.setItem(StorageKeys.TASKS, tasks);
+    } catch (e) {
+      console.error("Failed to save tasks to storage", e);
+    }
   }, [tasks]);
 
   useEffect(() => {
-    localStorage.setItem('raci_roster', JSON.stringify(roster));
+    try {
+      typedStorage.setItem(StorageKeys.ROSTER, roster);
+    } catch (e) {
+      console.error("Failed to save roster to storage", e);
+    }
   }, [roster]);
 
   // Theme State
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved === 'dark' || saved === 'light') return saved;
+      try {
+        const saved = typedStorage.getItem(StorageKeys.THEME);
+        if (saved === 'dark' || saved === 'light') return saved;
+      } catch (e) {
+        console.error("Failed to load theme from storage", e);
+      }
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     return 'light';
@@ -99,7 +112,11 @@ const App: React.FC = () => {
     } else {
       document.documentElement.classList.remove('dark');
     }
-    localStorage.setItem('theme', theme);
+    try {
+      typedStorage.setItem(StorageKeys.THEME, theme);
+    } catch (e) {
+      console.error("Failed to save theme to storage", e);
+    }
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');

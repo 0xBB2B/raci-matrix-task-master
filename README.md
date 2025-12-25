@@ -23,7 +23,7 @@ Additionally, it leverages AI to help break down high-level project goals into a
 - **Styling**: Tailwind CSS
 - **AI Integration**: Google GenAI SDK (Gemini)
 - **Icons**: Heroicons
-- **存储**: 基于 LZ-String 的智能压缩存储，支持压缩统计监控
+- **存储**: 基于 LZ-String 的智能压缩存储，支持压缩统计监控，提供全局实例 API
 - **Testing**: Vitest with UI support
 
 ## Getting Started
@@ -111,6 +111,26 @@ pnpm run test:ui
 - **透明操作**: 压缩和解压缩过程对用户完全透明
 - **统计监控**: 开发模式下可查看压缩效果统计信息
 - **错误恢复**: 压缩失败时自动回退到原始存储方式
+
+#### 开发者 API
+
+项目提供了便捷的存储服务 API：
+
+```typescript
+import { storageService, typedStorage, StorageKeys } from './services';
+
+// 使用通用存储服务
+storageService.setItem('myKey', { data: 'value' });
+const data = storageService.getItem('myKey');
+
+// 使用类型安全的存储服务（推荐）
+typedStorage.setItem(StorageKeys.TASKS, tasks);
+const savedTasks = typedStorage.getItem(StorageKeys.TASKS);
+
+// 获取压缩统计信息
+const stats = storageService.getCompressionStats();
+console.log(`压缩比率: ${stats.compressionRatio}`);
+```
 
 ## License
 

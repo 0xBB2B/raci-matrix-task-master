@@ -135,29 +135,39 @@ export class StorageService implements IStorageService {
 
       let decompressed: string;
       
+      // 首先尝试直接解析原始数据（兼容性检查）
       try {
-        // 尝试 LZ-String 解压缩
-        decompressed = LZString.decompressFromUTF16(stored);
-        
-        // 如果解压缩结果为空或 null，可能是原始数据
-        if (!decompressed) {
-          console.warn(`Decompression returned empty result for key "${key}", trying original data`);
-          decompressed = stored;
+        const parsed = JSON.parse(stored);
+        // 如果能够成功解析，说明是原始 JSON 数据
+        return parsed;
+      } catch (originalParseError) {
+        // 原始数据解析失败，尝试解压缩
+        try {
+          decompressed = LZString.decompressFromUTF16(stored);
+          
+          // 检查解压缩结果是否有效
+          if (!decompressed || decompressed === stored) {
+            // 解压缩无效，可能是损坏的数据
+            console.warn(`Decompression returned invalid result for key "${key}"`);
+            this.handleStorageError('getItem', key, new Error('Invalid compressed data'));
+            return null;
+          }
+        } catch (decompressionError) {
+          // 解压缩失败
+          console.warn(`Decompression failed for key "${key}":`, decompressionError);
+          this.handleStorageError('getItem', key, decompressionError);
+          return null;
         }
-      } catch (decompressionError) {
-        // 解压缩失败的回退机制：尝试读取原始数据
-        console.warn(`Decompression failed for key "${key}", falling back to original data:`, decompressionError);
-        decompressed = stored;
-      }
 
-      try {
-        // JSON 反序列化
-        return JSON.parse(decompressed);
-      } catch (parseError) {
-        // 数据格式错误处理
-        console.error(`JSON parsing failed for key "${key}":`, parseError);
-        this.handleStorageError('getItem', key, parseError);
-        return null;
+        try {
+          // JSON 反序列化解压缩后的数据
+          return JSON.parse(decompressed);
+        } catch (parseError) {
+          // 解压缩后的数据格式错误
+          console.error(`JSON parsing failed for decompressed data, key "${key}":`, parseError);
+          this.handleStorageError('getItem', key, parseError);
+          return null;
+        }
       }
     } catch (error) {
       this.handleStorageError('getItem', key, error);

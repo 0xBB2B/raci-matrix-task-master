@@ -16,8 +16,16 @@ export {
   type StorageData,
   type TypedStorageService,
   type StorageConfig,
-  DEFAULT_STORAGE_CONFIG
+  DEFAULT_STORAGE_CONFIG,
+  TypedStorageWrapper
 } from './storageTypes';
 
 // 导出现有的 Gemini 服务
-export { generateProjectSuggestions } from './geminiService';
+export { generateRaciPlan } from './geminiService';
+
+// 创建全局存储服务实例
+import { StorageService } from './storageService';
+import { TypedStorageWrapper } from './storageTypes';
+
+export const storageService = StorageService.getInstance();
+export const typedStorage = new TypedStorageWrapper(storageService);
