@@ -1,0 +1,5 @@
+{
+  "name": "RACI Matrix Task Master",
+  "description": "A comprehensive task management application based on the RACI (Responsible, Accountable, Consulted, Informed) matrix model. Features AI-powered project breakdown and role assignment.",
+  "requestFramePermissions": []
+}
