@@ -13,7 +13,7 @@ Additionally, it leverages AI to help break down high-level project goals into a
 - **✨ AI-Powered Planning**: Use the built-in AI assistant (powered by Google Gemini) to generate project plans and automatically suggest RACI roles.
 - **👥 Team Roster Management**: Easily manage your team members and assign them to roles.
 - **🌓 Dark/Light Mode**: Fully supported themes for comfortable viewing in any environment.
-- **💾 Local Storage Persistence**: Your data is saved locally in your browser, so you never lose track of your work.
+- **💾 Compressed Local Storage**: Advanced storage service with LZ-String compression reduces storage space usage and improves performance.
 - **📤 Import/Export**: Backup your data to JSON or migrate it to another device.
 
 ## Technology Stack
@@ -23,6 +23,7 @@ Additionally, it leverages AI to help break down high-level project goals into a
 - **Styling**: Tailwind CSS
 - **AI Integration**: Google GenAI SDK (Gemini)
 - **Icons**: Heroicons
+- **Storage**: LZ-String compression for optimized localStorage
 
 ## Getting Started
 

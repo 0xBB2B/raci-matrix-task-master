@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "源码文档同步",
+  "description": "监听 TypeScript、TSX、配置文件等源代码的变更，当这些文件被修改时，自动提示代理检查并更新 README.md 或 docs 文件夹中的相关文档",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.ts",
+      "*.tsx",
+      "*.json",
+      "package.json",
+      "tsconfig.json",
+      "vite.config.ts",
+      "constants.tsx",
+      "types.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "我刚刚修改了源代码文件。请检查这些变更是否需要更新项目文档。具体请检查：1) README.md 是否需要更新以反映新的功能、API 变更或使用说明；2) 如果存在 /docs 文件夹，检查其中的文档是否需要相应更新；3) 如果有新增的组件、服务或类型定义，确保在文档中有相应的说明。请分析变更内容并建议具体的文档更新。"
+  }
+}
