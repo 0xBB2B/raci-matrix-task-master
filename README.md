@@ -13,7 +13,7 @@ Additionally, it leverages AI to help break down high-level project goals into a
 - **✨ AI-Powered Planning**: Use the built-in AI assistant (powered by Google Gemini) to generate project plans and automatically suggest RACI roles.
 - **👥 Team Roster Management**: Easily manage your team members and assign them to roles.
 - **🌓 Dark/Light Mode**: Fully supported themes for comfortable viewing in any environment.
-- **💾 Compressed Local Storage**: Advanced storage service with LZ-String compression reduces storage space usage and improves performance.
+- **💾 智能压缩存储**: 基于 LZ-String 的高级存储服务，自动压缩所有 localStorage 数据，减少存储空间占用并提升性能，包含完整的压缩统计监控功能。
 - **📤 Import/Export**: Backup your data to JSON or migrate it to another device.
 
 ## Technology Stack
@@ -23,7 +23,7 @@ Additionally, it leverages AI to help break down high-level project goals into a
 - **Styling**: Tailwind CSS
 - **AI Integration**: Google GenAI SDK (Gemini)
 - **Icons**: Heroicons
-- **Storage**: LZ-String compression for optimized localStorage
+- **存储**: 基于 LZ-String 的智能压缩存储，支持压缩统计监控
 - **Testing**: Vitest with UI support
 
 ## Getting Started
@@ -66,37 +66,51 @@ Additionally, it leverages AI to help break down high-level project goals into a
 
     The application will be available at `http://localhost:3000`.
 
-### Testing
+### 测试
 
-Run the test suite to ensure everything is working correctly:
+运行测试套件以确保所有功能正常工作：
 
 ```bash
-# Run tests once
+# 运行所有测试（包括单元测试和属性测试）
 pnpm run test
 
-# Run tests in watch mode (for development)
+# 开发模式下运行测试（监视文件变化）
 pnpm run test:watch
 
-# Run tests with UI interface
+# 使用 UI 界面运行测试
 pnpm run test:ui
 ```
 
-## Usage Guide
+#### 测试覆盖范围
 
-### Creating Tasks
+- **单元测试**: 验证特定功能和边界情况
+- **属性测试**: 使用 fast-check 库进行基于属性的测试，验证存储服务的通用正确性
+- **压缩统计测试**: 验证 LZ-String 压缩功能和统计信息的准确性
 
-Click "New Task" to open the creation modal. Fill in the title, description, due date, and assign team members to their respective RACI roles.
+## 使用指南
 
-### Using AI Assist
+### 创建任务
 
-Click the "AI Assist" button to open the prompt window. Describe your project (e.g., "Plan a marketing launch for a new coffee brand"), and the AI will generate a list of tasks with suggested roles.
+点击"新建任务"打开创建模态框。填写标题、描述、截止日期，并为团队成员分配相应的 RACI 角色。
 
-### Managing Roles
+### 使用 AI 助手
 
-- **Responsible (R)**: Those who do the work to achieve the task.
-- **Accountable (A)**: The one ultimately answerable for the correct and thorough completion of the deliverable or task (Sign-off).
-- **Consulted (C)**: Those whose opinions are sought, typically subject matter experts; and with whom there is two-way communication.
-- **Informed (I)**: Those who are kept up-to-date on progress, often only on completion of the task or deliverable; and with whom there is just one-way communication.
+点击"AI 助手"按钮打开提示窗口。描述你的项目（例如："为新咖啡品牌规划营销发布"），AI 将生成带有建议角色的任务列表。
+
+### 管理角色
+
+- **负责人 (R)**: 执行工作以完成任务的人员。
+- **问责人 (A)**: 对任务的正确和彻底完成最终负责的人（签字人）。
+- **咨询人 (C)**: 征求意见的人员，通常是主题专家；双向沟通。
+- **知情人 (I)**: 了解进展情况的人员，通常只在任务完成时；单向沟通。
+
+### 存储优化
+
+应用使用智能压缩存储系统：
+- **自动压缩**: 所有数据在存储到 localStorage 前自动使用 LZ-String 压缩
+- **透明操作**: 压缩和解压缩过程对用户完全透明
+- **统计监控**: 开发模式下可查看压缩效果统计信息
+- **错误恢复**: 压缩失败时自动回退到原始存储方式
 
 ## License
 

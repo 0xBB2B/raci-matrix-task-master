@@ -14,7 +14,12 @@
 │   ├── RoleSelect.tsx     # 角色选择下拉组件
 │   └── TaskCard.tsx       # 任务卡片组件
 ├── services/              # 外部服务集成
-│   └── geminiService.ts   # Google Gemini AI 服务
+│   ├── geminiService.ts   # Google Gemini AI 服务
+│   ├── storageService.ts  # 智能压缩存储服务（基于 LZ-String）
+│   ├── storageService.test.ts      # 存储服务属性测试
+│   ├── storageService.unit.test.ts # 存储服务单元测试
+│   ├── storageTypes.ts    # 存储服务类型定义
+│   └── index.ts          # 服务模块导出
 ├── .env.local             # 环境变量（需要手动创建）
 ├── package.json           # 项目依赖和脚本
 ├── tsconfig.json          # TypeScript 配置
@@ -57,9 +62,11 @@
 3. **事件回调**：子组件通过回调函数向上通信
 
 ### 数据持久化
-- **自动保存**：使用 useEffect 监听状态变化自动保存到 localStorage
-- **初始化加载**：组件挂载时从 localStorage 恢复状态
-- **错误处理**：JSON 解析失败时回退到默认值
+- **智能压缩存储**：使用基于 LZ-String 的 StorageService 自动压缩所有 localStorage 数据
+- **自动保存**：使用 useEffect 监听状态变化自动保存到压缩存储
+- **初始化加载**：组件挂载时从压缩存储恢复状态
+- **错误处理**：压缩失败时回退到原始存储，解压缩失败时尝试读取原始数据
+- **统计监控**：开发模式下提供压缩效果统计信息
 
 ## 开发约定
 
@@ -77,3 +84,30 @@
 - **Tailwind 优先**：使用 Tailwind CSS 类名
 - **响应式设计**：移动优先的响应式布局
 - **深色模式**：所有组件支持深色模式变体
+
+## 服务层架构
+
+### StorageService - 智能压缩存储服务
+- **职责**：提供透明的数据压缩存储功能
+- **核心功能**：
+  - 自动 LZ-String 压缩和解压缩
+  - 完整的 localStorage API 兼容性
+  - 压缩统计信息收集和监控
+  - 错误处理和回退机制
+- **设计模式**：单例模式确保全局唯一实例
+- **测试覆盖**：
+  - 属性测试验证通用正确性（使用 fast-check）
+  - 单元测试验证具体功能和边界情况
+
+### 测试架构
+
+#### 属性测试（Property-Based Testing）
+- **测试库**：fast-check
+- **测试范围**：验证存储服务的通用正确性属性
+- **属性 1**：完整的存储服务功能 - 数据往返一致性和 API 兼容性
+- **属性 2**：压缩统计和监控完整性 - 统计信息准确性和更新机制
+
+#### 单元测试（Unit Testing）
+- **测试库**：Vitest
+- **测试范围**：验证特定功能、边界情况和错误处理
+- **覆盖内容**：各种数据类型、错误情况、压缩回退机制

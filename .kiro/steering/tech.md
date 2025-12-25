@@ -4,7 +4,8 @@
 
 - **前端框架**：React 19 + TypeScript
 - **构建工具**：Vite 6.2.0
-- **测试框架**：Vitest（支持 UI 界面）
+- **测试框架**：Vitest（支持 UI 界面）+ fast-check（属性测试）
+- **数据压缩**：LZ-String（localStorage 压缩优化）
 - **样式**：Tailwind CSS（通过类名实现）
 - **包管理器**：pnpm
 - **AI 集成**：Google GenAI SDK (Gemini)
@@ -51,9 +52,12 @@ pnpm run test:ui
 - 无外部状态管理库依赖
 
 ### 数据存储
-- **任务数据**：存储在 `localStorage` 的 `raci_tasks` 键
-- **团队名册**：存储在 `localStorage` 的 `raci_roster` 键  
-- **主题设置**：存储在 `localStorage` 的 `theme` 键
+- **存储服务**：基于 LZ-String 的智能压缩存储服务（StorageService）
+- **任务数据**：存储在压缩存储的 `raci_tasks` 键
+- **团队名册**：存储在压缩存储的 `raci_roster` 键  
+- **主题设置**：存储在压缩存储的 `theme` 键
+- **压缩优化**：自动压缩所有数据，减少存储空间占用
+- **统计监控**：提供压缩效果统计和监控功能
 
 ### TypeScript 配置
 - 目标：ES2022
@@ -70,3 +74,20 @@ pnpm run test:ui
 - 使用 Google Gemini 3 Flash Preview 模型
 - 结构化 JSON 输出用于任务生成
 - 错误处理和降级机制
+
+### 测试架构
+- **单元测试**：使用 Vitest 进行传统的单元测试
+- **属性测试**：使用 fast-check 进行基于属性的测试
+- **测试覆盖**：
+  - 存储服务功能完整性测试
+  - 压缩统计监控准确性测试
+  - 数据往返一致性验证
+  - 错误处理和回退机制测试
+- **测试运行**：支持监视模式和 UI 界面
+
+### 存储压缩技术
+- **压缩算法**：LZ-String UTF-16 压缩
+- **压缩策略**：自动压缩所有 JSON 序列化数据
+- **回退机制**：压缩失败时自动回退到原始存储
+- **统计收集**：实时收集压缩比率和存储空间统计
+- **错误恢复**：解压缩失败时尝试读取原始数据
