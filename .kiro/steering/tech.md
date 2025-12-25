@@ -4,6 +4,7 @@
 
 - **前端框架**：React 19 + TypeScript
 - **构建工具**：Vite 6.2.0
+- **测试框架**：Vitest（支持 UI 界面）
 - **样式**：Tailwind CSS（通过类名实现）
 - **包管理器**：pnpm
 - **AI 集成**：Google GenAI SDK (Gemini)
@@ -31,6 +32,15 @@ pnpm run build
 
 # 预览构建结果
 pnpm run preview
+
+# 运行测试
+pnpm run test
+
+# 运行测试（监视模式）
+pnpm run test:watch
+
+# 运行测试（UI 界面）
+pnpm run test:ui
 ```
 
 ## 技术架构特点

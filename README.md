@@ -24,6 +24,7 @@ Additionally, it leverages AI to help break down high-level project goals into a
 - **AI Integration**: Google GenAI SDK (Gemini)
 - **Icons**: Heroicons
 - **Storage**: LZ-String compression for optimized localStorage
+- **Testing**: Vitest with UI support
 
 ## Getting Started
 
@@ -64,6 +65,21 @@ Additionally, it leverages AI to help break down high-level project goals into a
     ```
 
     The application will be available at `http://localhost:3000`.
+
+### Testing
+
+Run the test suite to ensure everything is working correctly:
+
+```bash
+# Run tests once
+pnpm run test
+
+# Run tests in watch mode (for development)
+pnpm run test:watch
+
+# Run tests with UI interface
+pnpm run test:ui
+```
 
 ## Usage Guide
 
