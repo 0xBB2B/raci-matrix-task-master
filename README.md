@@ -43,7 +43,7 @@ Additionally, it leverages AI to help break down high-level project goals into a
 2.  **Install dependencies**
 
     ```bash
-    npm install
+    pnpm install
     ```
 
 3.  **Configure Environment Variables**
@@ -59,10 +59,10 @@ Additionally, it leverages AI to help break down high-level project goals into a
 4.  **Run the Development Server**
 
     ```bash
-    npm run dev
+    pnpm run dev
     ```
 
-    The application will be available at `http://localhost:5173`.
+    The application will be available at `http://localhost:3000`.
 
 ## Usage Guide
 
